@@ -1,0 +1,209 @@
+package algorithmDesign;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.*;
+
+public class Sequences {
+
+	public static int editDistance(String word1, String word2) {
+		int len1 = word1.length();
+		int len2 = word2.length();
+
+		// len1+1, len2+1, because finally return dp[len1][len2]
+		int[][] dp = new int[len1 + 1][len2 + 1];
+
+		for (int i = 0; i <= len1; i++) {
+			dp[i][0] = i;
+		}
+
+		for (int j = 0; j <= len2; j++) {
+			dp[0][j] = j;
+		}
+
+		//iterate though, and check last char
+		for (int i = 0; i < len1; i++) {
+			char c1 = word1.charAt(i);
+			for (int j = 0; j < len2; j++) {
+				char c2 = word2.charAt(j);
+
+				//if last two chars equal
+				if (c1 == c2) {
+					//update dp value for +1 length
+					dp[i + 1][j + 1] = dp[i][j];
+				} else {
+					int replace = dp[i][j] + 1;
+					int insert = dp[i][j + 1] + 1;
+					int delete = dp[i + 1][j] + 1;
+
+					int min = replace > insert ? insert : replace;
+					min = delete > min ? min : delete;
+					dp[i + 1][j + 1] = min;
+				}
+			}
+		}
+
+		return dp[len1][len2];
+	}
+
+	public static String[] RandomStringGenerator(int len) {
+		int numberOfStrings = 1000;
+		String[] randomStrings = new String[numberOfStrings];
+
+		Random random = new Random();
+
+		// Define the characters to use for generating random strings
+		String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+		for (int i = 0; i < numberOfStrings; i++) {
+			StringBuilder randomString = new StringBuilder(len);
+			for (int j = 0; j < len; j++) {
+				int randomIndex = random.nextInt(characters.length());
+				char randomChar = characters.charAt(randomIndex);
+				randomString.append(randomChar);
+			}
+			randomStrings[i] = randomString.toString();
+		}
+		return randomStrings;
+	}
+
+
+	public static String[] readWordsFromFile(String fileName) {
+		String[] words = new String[0];
+
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(fileName));
+			String line;
+			StringBuilder text = new StringBuilder();
+
+			while ((line = reader.readLine()) != null) {
+				text.append(line).append(" ");
+			}
+
+			// Split the text into words using whitespace as the delimiter
+			words = text.toString().split("\\s+");
+
+			reader.close();
+		} catch (IOException e) {
+			System.err.println("An error occurred: " + e.getMessage());
+		}
+
+		return words;
+	}
+
+	public static void main(String[] args)
+	{
+		// For len 10 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		ArrayList<Double> timeElapsed10 = new ArrayList<>();
+		String [ ] strListTen1 = RandomStringGenerator(10);
+		String [ ] strListTen2 = RandomStringGenerator(10);
+		for ( int c =0; c<1000;c++)
+		{
+			double startTime = System.currentTimeMillis( );
+			int dr = editDistance(strListTen1[c], strListTen2[c]);
+			double endTime = System.currentTimeMillis( );
+			double timeElapsed = endTime - startTime;
+			timeElapsed10.add(timeElapsed);
+		}
+		// Calculating average time elapsed for len 10
+		double totalTimeElapsed10 = 0;
+		for(int k = 0; k < timeElapsed10.size(); k++)
+			totalTimeElapsed10 += timeElapsed10.get(k);
+		System.out.println("Total time elapsed for len 10 str: " + totalTimeElapsed10);
+		// For len 10 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+		// For len 20 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		ArrayList<Double> timeElapsed20 = new ArrayList<>();
+		String [ ] strListTwenty1 = RandomStringGenerator(20);
+		String [ ] strListTwenty2 = RandomStringGenerator(20);
+		for ( int c =0; c<1000;c++)
+		{
+			double startTime = System.currentTimeMillis( );
+			int dr = editDistance(strListTwenty1[c], strListTwenty2[c]);
+			double endTime = System.currentTimeMillis( );
+			double timeElapsed = endTime - startTime;
+			timeElapsed20.add(timeElapsed);
+		}
+		// Calculating average time elapsed for len 10
+		double totalTimeElapsed20 = 0;
+		for(int k = 0; k < timeElapsed20.size(); k++)
+			totalTimeElapsed20 += timeElapsed20.get(k);
+		System.out.println("Total time elapsed for len 20 str: " + totalTimeElapsed20);
+		// For len 20 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+		// For len 50 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		ArrayList<Double> timeElapsed50 = new ArrayList<>();
+		String [ ] strListFifty1 = RandomStringGenerator(50);
+		String [ ] strListFifty2 = RandomStringGenerator(50);
+		for ( int c =0; c<1000;c++)
+		{
+			double startTime = System.currentTimeMillis( );
+			int dr = editDistance(strListFifty1[c], strListFifty2[c]);
+			double endTime = System.currentTimeMillis( );
+			double timeElapsed = endTime - startTime;
+			timeElapsed50.add(timeElapsed);
+		}
+		// Calculating average time elapsed for len 10
+		double totalTimeElapsed50 = 0;
+		for(int k = 0; k < timeElapsed50.size(); k++)
+			totalTimeElapsed50 += timeElapsed50.get(k);
+		System.out.println("Total time elapsed for len 50 str: " + totalTimeElapsed50);
+		// For len 50 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+		// For len 100 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		ArrayList<Double> timeElapsed100 = new ArrayList<>();
+		String [ ] strListHundred1 = RandomStringGenerator(100);
+		String [ ] strListHundred2 = RandomStringGenerator(100);
+		for ( int c =0; c<1000;c++)
+		{
+			double startTime = System.currentTimeMillis( );
+			int dr = editDistance(strListHundred1[c], strListHundred2[c]);
+			double endTime = System.currentTimeMillis( );
+			double timeElapsed = endTime - startTime;
+			timeElapsed100.add(timeElapsed);
+		}
+		// Calculating average time elapsed for len 10
+		double totalTimeElapsed100 = 0;
+		for(int k = 0; k < timeElapsed100.size(); k++)
+			totalTimeElapsed100 += timeElapsed100.get(k);
+		System.out.println("Total time elapsed for len 100 str: " + totalTimeElapsed100);
+		// For len 100 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+		// For my word ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		String fileName = "Web of Services - W3C.txt";
+		String[] words = readWordsFromFile(fileName);
+
+		ArrayList<int[]> distances = new ArrayList<>();
+
+		int i = 0;
+		for (String word : words) {
+			String indexTerm = "Super"; // this is my preferred word
+			int dr = editDistance(indexTerm, word);
+			int[] arr = {dr, i};
+			distances.add(arr);
+			i = i+1;
+		}
+
+		// Sorting the ArrayList based on the first element of each array
+		Collections.sort(distances, new Comparator<int[]>() {
+			@Override
+			public int compare(int[] arr1, int[] arr2) {
+				return Integer.compare(arr1[0], arr2[0]);
+			}
+		});
+
+		System.out.println("10 closest words are: ");
+		for (int j = 0; j < 10; j++) {
+			System.out.print(j+1 + ". ");
+			System.out.print(words[distances.get(j)[1]]);
+			System.out.print(" & distance is: ");
+			System.out.println(distances.get(j)[0]);
+		}
+		// For my word ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	}
+}
